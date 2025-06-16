@@ -74,6 +74,20 @@ build() {
     if [[ -f mcp.json ]]; then
         argc mcp merge-functions -S
     fi
+    # Build OpenCog components if available
+    if [[ -f CMakeLists.txt ]]; then
+        echo 'Building OpenCog components...'
+        argc build@opencog
+    fi
+}
+
+# @cmd Build OpenCog module
+# @alias opencog:build
+build@opencog() {
+    if [[ ! -f build-opencog.sh ]]; then
+        _die "error: build-opencog.sh not found"
+    fi
+    ./build-opencog.sh
 }
 
 # @cmd Build tools
@@ -582,6 +596,31 @@ mcp() {
 # @arg args~
 create@tool() {
     ./scripts/create-tool.sh "$@"
+}
+
+# @cmd Test OpenCog module structure
+# @alias opencog:test
+test@opencog() {
+    if [[ ! -f test-structure.sh ]]; then
+        _die "error: test-structure.sh not found"
+    fi
+    ./test-structure.sh
+}
+
+# @cmd Run OpenCog example
+# @alias opencog:example  
+example@opencog() {
+    if [[ ! -f example.scm ]]; then
+        _die "error: example.scm not found"
+    fi
+    if command -v guile &> /dev/null; then
+        guile example.scm
+    else
+        echo "Guile not installed. Install it to run examples:"
+        echo "  Ubuntu/Debian: sudo apt-get install guile-3.0"
+        echo "  Fedora: sudo dnf install guile"
+        echo "  macOS: brew install guile"
+    fi
 }
 
 # @cmd Displays version information for required tools
