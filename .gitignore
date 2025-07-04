@@ -16,3 +16,8 @@ node_modules
 package-lock.json
 *.lock
 /mcp.json
+
+# Build artifacts
+build/
+*.o
+*.so

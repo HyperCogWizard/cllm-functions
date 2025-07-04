@@ -107,13 +107,38 @@ SCM caichat_clear_history(SCM session_id_scm) {
     return SCM_BOOL_T;
 }
 
+// Scheme wrapper: Set model path for GGML
+SCM caichat_set_model_path(SCM session_id_scm, SCM path_scm) {
+    std::string session_id = scm_to_string(session_id_scm);
+    std::string path = scm_to_string(path_scm);
+    
+    auto it = chatSessions.find(session_id);
+    if (it == chatSessions.end()) {
+        scm_throw(scm_from_utf8_symbol("caichat-error"), 
+                 scm_list_1(scm_from_utf8_string("Session not found")));
+        return SCM_BOOL_F;
+    }
+    
+    // Check if this is a GGML client
+    GGMLClient* ggmlClient = dynamic_cast<GGMLClient*>(it->second->getClient());
+    if (ggmlClient) {
+        ggmlClient->setModelPath(path);
+        return SCM_BOOL_T;
+    } else {
+        scm_throw(scm_from_utf8_symbol("caichat-error"), 
+                 scm_list_1(scm_from_utf8_string("Session is not a GGML client")));
+        return SCM_BOOL_F;
+    }
+}
+
 // Initialize the module
 extern "C" void init_caichat_bindings() {
     scm_c_define_gsubr("caichat-create-client", 2, 0, 0, (scm_t_subr)caichat_create_client);
     scm_c_define_gsubr("caichat-send-message", 2, 0, 0, (scm_t_subr)caichat_send_message);
-    scm_c_define_gsubr("caichat-ask", 2, 0, 0, (scm_t_subr)caichat_ask);
+    scm_c_define_gsubr("caichat-ask-internal", 2, 0, 0, (scm_t_subr)caichat_ask);
     scm_c_define_gsubr("caichat-set-system-message", 2, 0, 0, (scm_t_subr)caichat_set_system_message);
     scm_c_define_gsubr("caichat-clear-history", 1, 0, 0, (scm_t_subr)caichat_clear_history);
+    scm_c_define_gsubr("caichat-set-model-path", 2, 0, 0, (scm_t_subr)caichat_set_model_path);
 }
 
 } // namespace caichat

@@ -194,12 +194,67 @@ std::string ClaudeClient::getProviderName() const {
     return "claude";
 }
 
+// GGML Client implementation
+GGMLClient::GGMLClient(const std::string& path, const std::string& type) 
+    : modelPath(path), modelType(type) {
+    if (modelPath.empty()) {
+        const char* envPath = std::getenv("GGML_MODEL_PATH");
+        if (envPath) {
+            modelPath = envPath;
+        }
+    }
+}
+
+std::string GGMLClient::chatCompletion(const std::vector<Message>& messages, const std::string& model) {
+    if (modelPath.empty()) {
+        throw std::runtime_error("GGML model path not set");
+    }
+    
+    // For now, this is a placeholder implementation
+    // In a real implementation, you would:
+    // 1. Load the GGML model from modelPath
+    // 2. Convert messages to the model's expected format
+    // 3. Run inference
+    // 4. Return the result
+    
+    std::string prompt = "";
+    for (const auto& msg : messages) {
+        if (msg.role == "system") {
+            prompt += "System: " + msg.content + "\n";
+        } else if (msg.role == "user") {
+            prompt += "User: " + msg.content + "\n";
+        } else if (msg.role == "assistant") {
+            prompt += "Assistant: " + msg.content + "\n";
+        }
+    }
+    prompt += "Assistant: ";
+    
+    // Placeholder response - in real implementation, this would call ggml
+    return "This is a placeholder response from GGML model at " + modelPath + 
+           ". The actual implementation would run inference on the local model.";
+}
+
+void GGMLClient::setApiKey(const std::string& key) {
+    // GGML models don't use API keys, but we implement this for interface compatibility
+    // Could be used to set model-specific parameters
+}
+
+std::string GGMLClient::getProviderName() const {
+    return "ggml";
+}
+
+void GGMLClient::setModelPath(const std::string& path) {
+    modelPath = path;
+}
+
 // ClientFactory implementation
 std::unique_ptr<LLMClient> ClientFactory::createClient(const std::string& provider, const std::string& apiKey) {
     if (provider == "openai") {
         return std::make_unique<OpenAIClient>(apiKey);
     } else if (provider == "claude" || provider == "anthropic") {
         return std::make_unique<ClaudeClient>(apiKey);
+    } else if (provider == "ggml" || provider == "local") {
+        return std::make_unique<GGMLClient>(apiKey);  // apiKey is used as model path for GGML
     } else {
         throw std::runtime_error("Unknown provider: " + provider);
     }

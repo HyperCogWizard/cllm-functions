@@ -4,7 +4,8 @@
 ;; Basic tests for CAIChat OpenCog module
 
 (use-modules (opencog caichat config)
-             (opencog caichat rag))
+             (opencog caichat rag)
+             (opencog caichat atomspace))
 
 (define test-count 0)
 (define passed-count 0)
@@ -37,6 +38,14 @@
 
 (let ((search-results (caichat-rag-search "test-kb" "AI")))
   (test "RAG search" 1 (length search-results)))
+
+;; Test AtomSpace integration
+(display "\nTesting AtomSpace integration...\n")
+(caichat-atomspace-add-concept "TestConcept" "A test concept for demonstration")
+(test "AtomSpace add concept" #t #t)  ; Just test that it doesn't error
+
+(let ((related (caichat-atomspace-get-related "TestConcept")))
+  (test "AtomSpace get related" 3 (length related)))
 
 ;; Test summary
 (display (format #f "\nTest Results: ~a/~a passed\n" passed-count test-count))

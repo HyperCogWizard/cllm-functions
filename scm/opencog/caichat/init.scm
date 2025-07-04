@@ -1,20 +1,29 @@
 ;; Main CAIChat module
 (define-module (opencog caichat init)
   #:use-module (system foreign)
+  #:use-module (ice-9 textual-ports)
+  #:use-module (ice-9 rdelim)
   #:export (caichat-ask
+            caichat-ask-internal
+            caichat-create-client
+            caichat-send-message
+            caichat-set-system-message
+            caichat-clear-history
             caichat-repl
             caichat-ask-about-atom
             caichat-create-knowledge-base
             caichat-add-document
-            caichat-rag-query
             caichat-setup-openai
             caichat-setup-claude
+            caichat-setup-ggml
             caichat-save-config
             caichat-load-config))
 
 ;; Load the C++ bindings
 (eval-when (load eval compile)
-  (load-extension "libcaichat" "init_caichat_bindings"))
+  (let ((lib-path (or (getenv "CAICHAT_LIB_PATH") 
+                      "build/opencog/libcaichat.so")))
+    (load-extension lib-path "init_caichat_bindings")))
 
 ;; Default provider
 (define *default-provider* "openai")
@@ -22,7 +31,7 @@
 ;; Simple ask function with default provider
 (define (caichat-ask message)
   "Ask a question using the default LLM provider"
-  (caichat-ask *default-provider* message))
+  (caichat-ask-internal *default-provider* message))
 
 ;; Interactive REPL
 (define (caichat-repl)
@@ -77,6 +86,12 @@
   "Set up Claude provider with API key"
   (setenv "ANTHROPIC_API_KEY" api-key)
   (set! *default-provider* "claude")
+  #t)
+
+(define (caichat-setup-ggml model-path)
+  "Set up GGML local model provider"
+  (setenv "GGML_MODEL_PATH" model-path)
+  (set! *default-provider* "ggml")
   #t)
 
 (define (caichat-save-config filename)

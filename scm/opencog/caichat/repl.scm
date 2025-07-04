@@ -2,6 +2,7 @@
 (define-module (opencog caichat repl)
   #:use-module (opencog caichat init)
   #:use-module (opencog caichat config)
+  #:use-module (ice-9 rdelim)
   #:export (caichat-repl-start
             caichat-repl-with-system-message
             caichat-repl-session))
