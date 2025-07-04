@@ -1,0 +1,13 @@
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/edit_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/rebuild_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/list_install_components.dir
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/install.dir
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/install/local.dir
+/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/install/strip.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/caichat.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/edit_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/rebuild_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/list_install_components.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install/local.dir
+/home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install/strip.dir
