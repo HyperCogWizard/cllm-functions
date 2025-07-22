@@ -1,0 +1,11 @@
+
+
+find_dependency(PkgConfig REQUIRED)
+find_dependency(CURL REQUIRED)
+
+pkg_check_modules(GUILE REQUIRED guile-3.0)
+pkg_check_modules(JSONCPP REQUIRED jsoncpp)
+
+include("${CMAKE_CURRENT_LIST_DIR}/caichat-targets.cmake")
+
+check_required_components(caichat)

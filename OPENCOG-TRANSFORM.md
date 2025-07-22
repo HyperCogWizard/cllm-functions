@@ -165,12 +165,30 @@ export OLLAMA_BASE_URL="http://localhost:11434"
 ;; Set up providers
 (caichat-setup-openai "your-api-key")
 (caichat-setup-claude "your-api-key")
+(caichat-setup-ggml "/path/to/model.gguf")
 
 ;; Save configuration
 (caichat-save-config "~/.caichat/config.scm")
 
 ;; Load configuration
 (caichat-load-config "~/.caichat/config.scm")
+```
+
+### GGML Local Model Support
+
+```scheme
+;; Set up local GGML model
+(caichat-setup-ggml "/path/to/llama-model.gguf")
+
+;; Use local model for queries
+(caichat-ask "What is machine learning?")
+
+;; Create session with local model
+(define session (caichat-create-client "ggml" "/path/to/model.gguf"))
+(caichat-send-message session "Hello, local AI!")
+
+;; RAG with local models
+(caichat-rag-query "knowledge-base" "Query using local model")
 ```
 
 ## Migration from Original
@@ -205,12 +223,14 @@ This is an active transformation project. The original Rust functionality is bei
 - Core C++ interfaces
 - Scheme bindings framework
 - Configuration system
+- GGML integration for local models
 
 ### Next Phase: Integration 🚧
 - Complete LLM client implementations
 - Advanced AtomSpace features
 - Reasoning integration
 - Performance optimization
+- Real GGML model loading
 
 ### Future Phase: Cognition 📋
 - Learning from conversations

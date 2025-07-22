@@ -74,7 +74,7 @@
                              query
                              (format #f "Context:\n~a\n\nQuestion: ~a" 
                                     context query))))
-    (caichat-ask provider augmented-query)))
+    (caichat-ask-internal provider augmented-query)))
 
 ;; List documents in knowledge base
 (define (caichat-rag-list-docs kb-name)
@@ -84,7 +84,7 @@
         (let ((documents (caddr kb)))
           (map (lambda (doc)
                  (list (car doc)  ; doc-id
-                       (length (cadr doc))  ; content length
+                       (string-length (cadr doc))  ; content length
                        (cadddr doc)))  ; metadata
                documents))
         '())))

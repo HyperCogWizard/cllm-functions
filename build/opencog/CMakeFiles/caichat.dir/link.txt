@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -Wl,--dependency-file=CMakeFiles/caichat.dir/link.d -shared -Wl,-soname,libcaichat.so -o libcaichat.so CMakeFiles/caichat.dir/caichat/LLMClient.cc.o CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o  -lguile-3.0 -lgc -lpthread -ldl -ljsoncpp /usr/lib/x86_64-linux-gnu/libcurl.so

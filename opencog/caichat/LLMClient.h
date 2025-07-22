@@ -90,6 +90,24 @@ public:
 };
 
 /**
+ * GGML-based local client implementation
+ */
+class GGMLClient : public LLMClient {
+private:
+    std::string modelPath;
+    std::string modelType;
+    
+public:
+    GGMLClient(const std::string& path = "", const std::string& type = "llama");
+    
+    std::string chatCompletion(const std::vector<Message>& messages, 
+                             const std::string& model = "") override;
+    void setApiKey(const std::string& key) override;
+    std::string getProviderName() const override;
+    void setModelPath(const std::string& path);
+};
+
+/**
  * Client factory
  */
 class ClientFactory {
