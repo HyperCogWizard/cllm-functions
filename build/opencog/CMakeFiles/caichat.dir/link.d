@@ -3,13 +3,6 @@ libcaichat.so: \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
   CMakeFiles/caichat.dir/caichat/LLMClient.cc.o \
   CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o \
-  CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o \
-  /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libguile-3.0.so \
-  /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libgc.so \
-  /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libpthread.a \
-  /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libdl.a \
-  /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libjsoncpp.so \
-  /usr/lib/x86_64-linux-gnu/libcurl.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libm.so \
@@ -42,20 +35,6 @@ libcaichat.so: \
 CMakeFiles/caichat.dir/caichat/LLMClient.cc.o:
 
 CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o:
-
-CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libguile-3.0.so:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libgc.so:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libpthread.a:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libdl.a:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/../../../x86_64-linux-gnu/libjsoncpp.so:
-
-/usr/lib/x86_64-linux-gnu/libcurl.so:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 

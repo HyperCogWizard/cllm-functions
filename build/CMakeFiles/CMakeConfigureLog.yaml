@@ -564,3 +564,41 @@ events:
       Running the CXX compiler's linker: "/usr/bin/ld" "-v"
       GNU ld (GNU Binutils for Ubuntu) 2.42
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/local/share/cmake-3.31/Modules/CheckIncludeFile.cmake:99 (try_compile)"
+      - "CMakeLists.txt:28 (check_include_file)"
+    checks:
+      - "Looking for curl/curl.h"
+    directories:
+      source: "/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi"
+      binary: "/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "HAVE_CURL_HEADER"
+      cached: true
+      stdout: |
+        Change Dir: '/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi'
+        
+        Run Build Command(s): /usr/local/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_66018/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_66018.dir/build.make CMakeFiles/cmTC_66018.dir/build
+        gmake[1]: Entering directory '/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi'
+        Building C object CMakeFiles/cmTC_66018.dir/CheckIncludeFile.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_66018.dir/CheckIncludeFile.c.o -c /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi/CheckIncludeFile.c
+        /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi/CheckIncludeFile.c:1:10: fatal error: curl/curl.h: No such file or directory
+            1 | #include <curl/curl.h>
+              |          ^~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_66018.dir/build.make:81: CMakeFiles/cmTC_66018.dir/CheckIncludeFile.c.o] Error 1
+        gmake[1]: Leaving directory '/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles/CMakeScratch/TryCompile-ybG9zi'
+        gmake: *** [Makefile:134: cmTC_66018/fast] Error 2
+        
+      exitCode: 2
+...

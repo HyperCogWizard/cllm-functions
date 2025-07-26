@@ -4,8 +4,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o.d"
   "CMakeFiles/caichat.dir/caichat/LLMClient.cc.o"
   "CMakeFiles/caichat.dir/caichat/LLMClient.cc.o.d"
-  "CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o"
-  "CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o.d"
   "libcaichat.pdb"
   "libcaichat.so"
 )

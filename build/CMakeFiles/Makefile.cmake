@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
   "/home/runner/work/cllm-functions/cllm-functions/caichat-config.cmake.in"
   "/home/runner/work/cllm-functions/cllm-functions/opencog/CMakeLists.txt"
+  "/home/runner/work/cllm-functions/cllm-functions/tests/CMakeLists.txt"
   "/usr/local/share/cmake-3.31/Modules/CMakeCInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCXXInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake"
@@ -21,6 +22,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/cmake-3.31/Modules/CMakeLanguageInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/usr/local/share/cmake-3.31/Modules/CheckIncludeFile.cmake"
   "/usr/local/share/cmake-3.31/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/usr/local/share/cmake-3.31/Modules/Compiler/GNU-C.cmake"
   "/usr/local/share/cmake-3.31/Modules/Compiler/GNU-CXX.cmake"
@@ -59,9 +61,11 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "caichat-config.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "opencog/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "tests/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "opencog/CMakeFiles/caichat.dir/DependInfo.cmake"
+  "tests/CMakeFiles/test_ggml_integration.dir/DependInfo.cmake"
   )

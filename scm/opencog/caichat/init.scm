@@ -17,7 +17,11 @@
             caichat-setup-claude
             caichat-setup-ggml
             caichat-save-config
-            caichat-load-config))
+            caichat-load-config
+            ;; New GGML functions
+            caichat-ggml-load-model
+            caichat-ggml-generate  
+            caichat-ggml-model-info))
 
 ;; Load the C++ bindings
 (eval-when (load eval compile)
