@@ -174,6 +174,19 @@ caichat/fast:
 	$(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/build
 .PHONY : caichat/fast
 
+#=============================================================================
+# Target rules for targets named test_ggml_integration
+
+# Build rule for target.
+test_ggml_integration: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_ggml_integration
+.PHONY : test_ggml_integration
+
+# fast build rule for target.
+test_ggml_integration/fast:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_ggml_integration.dir/build.make tests/CMakeFiles/test_ggml_integration.dir/build
+.PHONY : test_ggml_integration/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -187,6 +200,7 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... caichat"
+	@echo "... test_ggml_integration"
 .PHONY : help
 
 

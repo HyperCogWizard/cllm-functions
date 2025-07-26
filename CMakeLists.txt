@@ -106,6 +106,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/opencog)
 
 # Add subdirectories
 add_subdirectory(opencog)
+add_subdirectory(tests)
 
 # Install Scheme modules (only if Guile is available)
 if(GUILE_AVAILABLE)

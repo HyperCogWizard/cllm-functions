@@ -11,3 +11,10 @@
 /home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install.dir
 /home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install/local.dir
 /home/runner/work/cllm-functions/cllm-functions/build/opencog/CMakeFiles/install/strip.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/test_ggml_integration.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/edit_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/rebuild_cache.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/list_install_components.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/install.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/install/local.dir
+/home/runner/work/cllm-functions/cllm-functions/build/tests/CMakeFiles/install/strip.dir

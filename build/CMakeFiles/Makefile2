@@ -64,18 +64,22 @@ CMAKE_BINARY_DIR = /home/runner/work/cllm-functions/cllm-functions/build
 
 # The main recursive "all" target.
 all: opencog/all
+all: tests/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: opencog/codegen
+codegen: tests/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
 preinstall: opencog/preinstall
+preinstall: tests/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: opencog/clean
+clean: tests/clean
 .PHONY : clean
 
 #=============================================================================
@@ -96,6 +100,25 @@ opencog/preinstall:
 # Recursive "clean" directory target.
 opencog/clean: opencog/CMakeFiles/caichat.dir/clean
 .PHONY : opencog/clean
+
+#=============================================================================
+# Directory level rules for directory tests
+
+# Recursive "all" directory target.
+tests/all: tests/CMakeFiles/test_ggml_integration.dir/all
+.PHONY : tests/all
+
+# Recursive "codegen" directory target.
+tests/codegen: tests/CMakeFiles/test_ggml_integration.dir/codegen
+.PHONY : tests/codegen
+
+# Recursive "preinstall" directory target.
+tests/preinstall:
+.PHONY : tests/preinstall
+
+# Recursive "clean" directory target.
+tests/clean: tests/CMakeFiles/test_ggml_integration.dir/clean
+.PHONY : tests/clean
 
 #=============================================================================
 # Target rules for target opencog/CMakeFiles/caichat.dir
@@ -128,6 +151,38 @@ opencog/CMakeFiles/caichat.dir/codegen:
 opencog/CMakeFiles/caichat.dir/clean:
 	$(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/clean
 .PHONY : opencog/CMakeFiles/caichat.dir/clean
+
+#=============================================================================
+# Target rules for target tests/CMakeFiles/test_ggml_integration.dir
+
+# All Build rule for target.
+tests/CMakeFiles/test_ggml_integration.dir/all: opencog/CMakeFiles/caichat.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_ggml_integration.dir/build.make tests/CMakeFiles/test_ggml_integration.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_ggml_integration.dir/build.make tests/CMakeFiles/test_ggml_integration.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=4,5 "Built target test_ggml_integration"
+.PHONY : tests/CMakeFiles/test_ggml_integration.dir/all
+
+# Build rule for subdir invocation for target.
+tests/CMakeFiles/test_ggml_integration.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles 5
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test_ggml_integration.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles 0
+.PHONY : tests/CMakeFiles/test_ggml_integration.dir/rule
+
+# Convenience name for target.
+test_ggml_integration: tests/CMakeFiles/test_ggml_integration.dir/rule
+.PHONY : test_ggml_integration
+
+# codegen rule for target.
+tests/CMakeFiles/test_ggml_integration.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_ggml_integration.dir/build.make tests/CMakeFiles/test_ggml_integration.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=4,5 "Finished codegen for target test_ggml_integration"
+.PHONY : tests/CMakeFiles/test_ggml_integration.dir/codegen
+
+# clean rule for target.
+tests/CMakeFiles/test_ggml_integration.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test_ggml_integration.dir/build.make tests/CMakeFiles/test_ggml_integration.dir/clean
+.PHONY : tests/CMakeFiles/test_ggml_integration.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

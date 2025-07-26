@@ -422,6 +422,50 @@ opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o: /home/runner/work/cllm-fu
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
 
+opencog/libcaichat.so: /lib/x86_64-linux-gnu/libc.so.6 \
+  /lib/x86_64-linux-gnu/libm.so.6 \
+  /lib/x86_64-linux-gnu/libmvec.so.1 \
+  /lib64/ld-linux-x86-64.so.2 \
+  /usr/lib/x86_64-linux-gnu/crti.o \
+  /usr/lib/x86_64-linux-gnu/crtn.o \
+  /usr/lib/x86_64-linux-gnu/libc.so \
+  /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 \
+  /usr/lib/x86_64-linux-gnu/libm.so \
+  /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
+  /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
+  opencog/CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o \
+  opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o
+
+
+opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a:
+
+/usr/lib/x86_64-linux-gnu/libm.so:
+
+/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/lib/x86_64-linux-gnu/libc.so:
+
+/usr/lib/x86_64-linux-gnu/crtn.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so:
+
+/usr/lib/x86_64-linux-gnu/crti.o:
+
+/lib64/ld-linux-x86-64.so.2:
+
+/lib/x86_64-linux-gnu/libmvec.so.1:
+
+/lib/x86_64-linux-gnu/libm.so.6:
+
+/lib/x86_64-linux-gnu/libc.so.6:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
 
@@ -569,6 +613,8 @@ opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o: /home/runner/work/cllm-fu
 
 /usr/include/c++/13/bits/predefined_ops.h:
 
+/usr/lib/x86_64-linux-gnu/libc_nonshared.a:
+
 /usr/include/c++/13/bits/ostream_insert.h:
 
 /usr/include/c++/13/bits/functexcept.h:
@@ -639,11 +685,15 @@ opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o: /home/runner/work/cllm-fu
 
 /usr/include/c++/13/bits/allocated_ptr.h:
 
+opencog/CMakeFiles/caichat.dir/caichat/ChatCompletion.cc.o:
+
 /usr/include/c++/13/cerrno:
 
 /usr/include/c++/13/bits/stl_uninitialized.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
@@ -832,6 +882,8 @@ opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.o: /home/runner/work/cllm-fu
 /usr/include/c++/13/bits/std_abs.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 

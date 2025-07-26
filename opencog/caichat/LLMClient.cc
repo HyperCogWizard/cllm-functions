@@ -222,6 +222,14 @@ std::string ClaudeClient::chatCompletion(const std::vector<Message>& messages, c
 
 #endif
 
+void ClaudeClient::setApiKey(const std::string& key) {
+    apiKey = key;
+}
+
+std::string ClaudeClient::getProviderName() const {
+    return "claude";
+}
+
 // GGML Client implementation
 GGMLClient::GGMLClient(const std::string& path, const std::string& type) 
     : modelPath(path), modelType(type) {
