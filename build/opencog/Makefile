@@ -223,30 +223,6 @@ caichat/LLMClient.cc.s:
 	cd /home/runner/work/cllm-functions/cllm-functions/build && $(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/caichat/LLMClient.cc.s
 .PHONY : caichat/LLMClient.cc.s
 
-caichat/SchemeBindings.o: caichat/SchemeBindings.cc.o
-.PHONY : caichat/SchemeBindings.o
-
-# target to build an object file
-caichat/SchemeBindings.cc.o:
-	cd /home/runner/work/cllm-functions/cllm-functions/build && $(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.o
-.PHONY : caichat/SchemeBindings.cc.o
-
-caichat/SchemeBindings.i: caichat/SchemeBindings.cc.i
-.PHONY : caichat/SchemeBindings.i
-
-# target to preprocess a source file
-caichat/SchemeBindings.cc.i:
-	cd /home/runner/work/cllm-functions/cllm-functions/build && $(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.i
-.PHONY : caichat/SchemeBindings.cc.i
-
-caichat/SchemeBindings.s: caichat/SchemeBindings.cc.s
-.PHONY : caichat/SchemeBindings.s
-
-# target to generate assembly for a file
-caichat/SchemeBindings.cc.s:
-	cd /home/runner/work/cllm-functions/cllm-functions/build && $(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/caichat/SchemeBindings.cc.s
-.PHONY : caichat/SchemeBindings.cc.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -266,9 +242,6 @@ help:
 	@echo "... caichat/LLMClient.o"
 	@echo "... caichat/LLMClient.i"
 	@echo "... caichat/LLMClient.s"
-	@echo "... caichat/SchemeBindings.o"
-	@echo "... caichat/SchemeBindings.i"
-	@echo "... caichat/SchemeBindings.s"
 .PHONY : help
 
 

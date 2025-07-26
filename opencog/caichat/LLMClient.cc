@@ -1,12 +1,18 @@
 #include "LLMClient.h"
+#ifdef HAVE_CURL
 #include <curl/curl.h>
+#endif
+#ifdef HAVE_JSONCPP
 #include <json/json.h>
+#endif
 #include <stdexcept>
 #include <cstdlib>
 #include <sstream>
 
 namespace opencog {
 namespace caichat {
+
+#if defined(HAVE_CURL) && defined(HAVE_JSONCPP)
 
 // Helper function for HTTP requests
 struct HTTPResponse {
@@ -61,6 +67,8 @@ static HTTPResponse makeHTTPRequest(const std::string& url, const std::string& p
     return response;
 }
 
+#endif // HAVE_CURL && HAVE_JSONCPP
+
 // Base LLMClient implementation
 std::string LLMClient::ask(const std::string& prompt, const std::string& model) {
     std::vector<Message> messages;
@@ -69,6 +77,8 @@ std::string LLMClient::ask(const std::string& prompt, const std::string& model) 
 }
 
 // OpenAI Client implementation
+#if defined(HAVE_CURL) && defined(HAVE_JSONCPP)
+
 OpenAIClient::OpenAIClient(const std::string& key, const std::string& url) 
     : apiKey(key), baseUrl(url) {
     if (apiKey.empty()) {
@@ -122,6 +132,18 @@ std::string OpenAIClient::chatCompletion(const std::vector<Message>& messages, c
     return jsonResponse["choices"][0]["message"]["content"].asString();
 }
 
+#else
+
+OpenAIClient::OpenAIClient(const std::string& key, const std::string& url) 
+    : apiKey(key), baseUrl(url) {
+}
+
+std::string OpenAIClient::chatCompletion(const std::vector<Message>& messages, const std::string& model) {
+    throw std::runtime_error("OpenAI client not available - CURL and JsonCpp required");
+}
+
+#endif
+
 void OpenAIClient::setApiKey(const std::string& key) {
     apiKey = key;
 }
@@ -131,6 +153,8 @@ std::string OpenAIClient::getProviderName() const {
 }
 
 // Claude Client implementation
+#if defined(HAVE_CURL) && defined(HAVE_JSONCPP)
+
 ClaudeClient::ClaudeClient(const std::string& key, const std::string& url) 
     : apiKey(key), baseUrl(url) {
     if (apiKey.empty()) {
@@ -186,13 +210,17 @@ std::string ClaudeClient::chatCompletion(const std::vector<Message>& messages, c
     return jsonResponse["content"][0]["text"].asString();
 }
 
-void ClaudeClient::setApiKey(const std::string& key) {
-    apiKey = key;
+#else
+
+ClaudeClient::ClaudeClient(const std::string& key, const std::string& url) 
+    : apiKey(key), baseUrl(url) {
 }
 
-std::string ClaudeClient::getProviderName() const {
-    return "claude";
+std::string ClaudeClient::chatCompletion(const std::vector<Message>& messages, const std::string& model) {
+    throw std::runtime_error("Claude client not available - CURL and JsonCpp required");
 }
+
+#endif
 
 // GGML Client implementation
 GGMLClient::GGMLClient(const std::string& path, const std::string& type) 
@@ -203,20 +231,204 @@ GGMLClient::GGMLClient(const std::string& path, const std::string& type)
             modelPath = envPath;
         }
     }
+    
+#ifdef HAVE_GGML
+    // Initialize llama backend
+    llama_backend_init();
+#endif
+}
+
+GGMLClient::~GGMLClient() {
+    unloadModel();
+#ifdef HAVE_GGML
+    llama_backend_free();
+#endif
+}
+
+bool GGMLClient::loadModel(const std::string& path, const ModelParams& params) {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+    // Validate parameters
+    if (!params.isValid()) {
+        throw std::runtime_error("Invalid model parameters");
+    }
+    
+    // Unload existing model
+    if (modelLoaded) {
+        unloadModel();
+    }
+    
+#ifdef HAVE_GGML
+    try {
+        // Set up model parameters
+        llama_model_params model_params = llama_model_default_params();
+        model_params.n_gpu_layers = params.n_gpu_layers;
+        model_params.use_mmap = params.use_mmap;
+        model_params.use_mlock = params.use_mlock;
+        
+        // Load model
+        model = llama_load_model_from_file(path.c_str(), model_params);
+        if (!model) {
+            throw std::runtime_error("Failed to load model from: " + path);
+        }
+        
+        // Create context
+        llama_context_params ctx_params = llama_context_default_params();
+        ctx_params.n_ctx = params.n_ctx;
+        ctx_params.n_batch = params.n_batch;
+        ctx_params.embedding = params.embedding;
+        ctx_params.rope_freq_base = params.rope_freq_base;
+        ctx_params.rope_freq_scale = params.rope_freq_scale;
+        
+        context = llama_new_context_with_model(model, ctx_params);
+        if (!context) {
+            llama_free_model(model);
+            model = nullptr;
+            throw std::runtime_error("Failed to create context for model");
+        }
+        
+        // Initialize sampling context
+        llama_sampling_params sampling_params = {};
+        sampling_ctx = llama_sampling_init(sampling_params);
+        
+        modelPath = path;
+        modelParams = params;
+        modelLoaded = true;
+        
+        return true;
+    } catch (const std::exception& e) {
+        // Cleanup on failure
+        if (context) {
+            llama_free(context);
+            context = nullptr;
+        }
+        if (model) {
+            llama_free_model(model);
+            model = nullptr;
+        }
+        throw;
+    }
+#else
+    // Fallback for when GGML is not available
+    throw std::runtime_error("GGML support not compiled in - cannot load model");
+#endif
+}
+
+void GGMLClient::unloadModel() {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+#ifdef HAVE_GGML
+    if (sampling_ctx) {
+        llama_sampling_free(sampling_ctx);
+        sampling_ctx = nullptr;
+    }
+    
+    if (context) {
+        llama_free(context);
+        context = nullptr;
+    }
+    
+    if (model) {
+        llama_free_model(model);
+        model = nullptr;
+    }
+#endif
+    
+    modelLoaded = false;
+}
+
+std::string GGMLClient::generateText(const std::string& prompt, const GenerationParams& params) {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+    if (!modelLoaded) {
+        throw std::runtime_error("Model not loaded");
+    }
+    
+    // Validate generation parameters
+    if (!params.isValid()) {
+        throw std::runtime_error("Invalid generation parameters");
+    }
+    
+#ifdef HAVE_GGML
+    try {
+        // Tokenize prompt
+        std::vector<llama_token> tokens = llama_tokenize(context, prompt, true, true);
+        
+        if (tokens.empty()) {
+            throw std::runtime_error("Failed to tokenize prompt");
+        }
+        
+        // Check context size
+        if (tokens.size() >= (size_t)llama_n_ctx(context)) {
+            throw std::runtime_error("Prompt too long for context size");
+        }
+        
+        // Evaluate prompt
+        llama_batch batch = llama_batch_get_one(tokens.data(), tokens.size(), 0, 0);
+        if (llama_decode(context, batch) != 0) {
+            throw std::runtime_error("Failed to evaluate prompt");
+        }
+        
+        // Generate tokens
+        std::string result;
+        for (int i = 0; i < params.n_predict; ++i) {
+            // Sample next token
+            llama_token new_token = llama_sampling_sample(sampling_ctx, context, nullptr);
+            
+            // Check for end of sequence
+            if (new_token == llama_token_eos(model)) {
+                break;
+            }
+            
+            // Convert to text
+            char buf[256];
+            int len = llama_token_to_piece(model, new_token, buf, sizeof(buf), false);
+            if (len > 0) {
+                result.append(buf, len);
+            }
+            
+            // Check for stop words
+            bool should_stop = false;
+            for (const auto& stop_word : params.stop_words) {
+                if (result.find(stop_word) != std::string::npos) {
+                    should_stop = true;
+                    break;
+                }
+            }
+            if (should_stop) break;
+            
+            // Add token to context for next iteration
+            llama_batch next_batch = llama_batch_get_one(&new_token, 1, tokens.size() + i, 0);
+            if (llama_decode(context, next_batch) != 0) {
+                break;
+            }
+        }
+        
+        return result;
+    } catch (const std::exception& e) {
+        throw std::runtime_error("Text generation failed: " + std::string(e.what()));
+    }
+#else
+    // Fallback when GGML is not available
+    return "GGML not available - using placeholder response for prompt: " + prompt;
+#endif
 }
 
 std::string GGMLClient::chatCompletion(const std::vector<Message>& messages, const std::string& model) {
-    if (modelPath.empty()) {
-        throw std::runtime_error("GGML model path not set");
+    if (!modelLoaded && !modelPath.empty()) {
+        // Try to auto-load the model
+        try {
+            loadModel(modelPath, modelParams);
+        } catch (const std::exception& e) {
+            throw std::runtime_error("Failed to auto-load model: " + std::string(e.what()));
+        }
     }
     
-    // For now, this is a placeholder implementation
-    // In a real implementation, you would:
-    // 1. Load the GGML model from modelPath
-    // 2. Convert messages to the model's expected format
-    // 3. Run inference
-    // 4. Return the result
+    if (!modelLoaded) {
+        throw std::runtime_error("GGML model not loaded and no path specified");
+    }
     
+    // Convert messages to prompt format
     std::string prompt = "";
     for (const auto& msg : messages) {
         if (msg.role == "system") {
@@ -229,14 +441,128 @@ std::string GGMLClient::chatCompletion(const std::vector<Message>& messages, con
     }
     prompt += "Assistant: ";
     
-    // Placeholder response - in real implementation, this would call ggml
-    return "This is a placeholder response from GGML model at " + modelPath + 
-           ". The actual implementation would run inference on the local model.";
+    return generateText(prompt, defaultGenParams);
+}
+
+void GGMLClient::streamGeneration(const std::string& prompt, StreamCallback callback, const GenerationParams& params) {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+    if (!modelLoaded) {
+        callback("", "Model not loaded", true);
+        return;
+    }
+    
+#ifdef HAVE_GGML
+    try {
+        // Tokenize and setup (similar to generateText)
+        std::vector<llama_token> tokens = llama_tokenize(context, prompt, true, true);
+        
+        if (tokens.empty()) {
+            callback("", "Failed to tokenize prompt", true);
+            return;
+        }
+        
+        // Evaluate prompt
+        llama_batch batch = llama_batch_get_one(tokens.data(), tokens.size(), 0, 0);
+        if (llama_decode(context, batch) != 0) {
+            callback("", "Failed to evaluate prompt", true);
+            return;
+        }
+        
+        // Stream tokens
+        for (int i = 0; i < params.n_predict; ++i) {
+            llama_token new_token = llama_sampling_sample(sampling_ctx, context, nullptr);
+            
+            if (new_token == llama_token_eos(model)) {
+                callback("", "", true); // End of sequence
+                break;
+            }
+            
+            // Convert token to text
+            char buf[256];
+            int len = llama_token_to_piece(model, new_token, buf, sizeof(buf), false);
+            
+            if (len > 0) {
+                std::string token_text(buf, len);
+                callback(token_text, "", false); // Stream token
+            }
+            
+            // Continue generation
+            llama_batch next_batch = llama_batch_get_one(&new_token, 1, tokens.size() + i, 0);
+            if (llama_decode(context, next_batch) != 0) {
+                callback("", "Generation failed", true);
+                break;
+            }
+        }
+    } catch (const std::exception& e) {
+        callback("", e.what(), true);
+    }
+#else
+    // Fallback for non-GGML builds
+    callback("GGML not available - placeholder token", "", false);
+    callback("", "", true);
+#endif
+}
+
+ModelInfo GGMLClient::getModelInfo() const {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+    ModelInfo info;
+    info.path = modelPath;
+    
+#ifdef HAVE_GGML
+    if (model && context) {
+        info.parameter_count = llama_model_n_params(model);
+        info.vocab_size = llama_n_vocab(model);
+        info.context_length = llama_n_ctx(context);
+        info.memory_usage_bytes = llama_get_state_size(context);
+        info.architecture = "llama"; // Could be made more specific
+    }
+#endif
+    
+    return info;
+}
+
+size_t GGMLClient::getModelMemoryUsage() const {
+    std::lock_guard<std::mutex> lock(modelMutex);
+    
+#ifdef HAVE_GGML
+    if (context) {
+        return llama_get_state_size(context);
+    }
+#endif
+    return 0;
+}
+
+void GGMLClient::setDefaultGenerationParams(const GenerationParams& params) {
+    if (params.isValid()) {
+        defaultGenParams = params;
+    } else {
+        throw std::runtime_error("Invalid generation parameters");
+    }
+}
+
+GenerationParams GGMLClient::getDefaultGenerationParams() const {
+    return defaultGenParams;
+}
+
+void GGMLClient::setModelParams(const ModelParams& params) {
+    if (params.isValid()) {
+        modelParams = params;
+    } else {
+        throw std::runtime_error("Invalid model parameters");
+    }
+}
+
+ModelParams GGMLClient::getModelParams() const {
+    return modelParams;
 }
 
 void GGMLClient::setApiKey(const std::string& key) {
-    // GGML models don't use API keys, but we implement this for interface compatibility
-    // Could be used to set model-specific parameters
+    // GGML models don't use API keys, but we can use this for model path or other config
+    if (!key.empty()) {
+        modelPath = key;
+    }
 }
 
 std::string GGMLClient::getProviderName() const {

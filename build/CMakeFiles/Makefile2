@@ -104,12 +104,12 @@ opencog/clean: opencog/CMakeFiles/caichat.dir/clean
 opencog/CMakeFiles/caichat.dir/all:
 	$(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/depend
 	$(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=1,2,3,4 "Built target caichat"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=1,2,3 "Built target caichat"
 .PHONY : opencog/CMakeFiles/caichat.dir/all
 
 # Build rule for subdir invocation for target.
 opencog/CMakeFiles/caichat.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 opencog/CMakeFiles/caichat.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles 0
 .PHONY : opencog/CMakeFiles/caichat.dir/rule
@@ -121,7 +121,7 @@ caichat: opencog/CMakeFiles/caichat.dir/rule
 # codegen rule for target.
 opencog/CMakeFiles/caichat.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f opencog/CMakeFiles/caichat.dir/build.make opencog/CMakeFiles/caichat.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target caichat"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/runner/work/cllm-functions/cllm-functions/build/CMakeFiles --progress-num=1,2,3 "Finished codegen for target caichat"
 .PHONY : opencog/CMakeFiles/caichat.dir/codegen
 
 # clean rule for target.

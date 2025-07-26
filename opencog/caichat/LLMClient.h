@@ -5,6 +5,13 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <functional>
+#include <mutex>
+
+#ifdef HAVE_GGML
+#include <ggml.h>
+#include <llama.h>
+#endif
 
 namespace opencog {
 namespace caichat {
@@ -18,6 +25,79 @@ struct Message {
     
     Message(const std::string& r, const std::string& c) : role(r), content(c) {}
 };
+
+/**
+ * Generation parameters for text generation
+ */
+struct GenerationParams {
+    int32_t n_predict = 128;        // Number of tokens to predict
+    int32_t top_k = 40;             // Top-k sampling
+    float top_p = 0.95f;            // Top-p sampling
+    float temp = 0.7f;              // Temperature
+    float repeat_penalty = 1.1f;    // Repetition penalty
+    int32_t repeat_last_n = 64;     // Tokens to consider for repetition
+    
+    std::vector<std::string> stop_words; // Stop sequences
+    bool echo = false;              // Echo the prompt
+    
+    // Validation
+    bool isValid() const {
+        return n_predict > 0 && temp >= 0.0f && top_p >= 0.0f && top_p <= 1.0f;
+    }
+    
+    std::string toString() const {
+        return "GenerationParams{n_predict=" + std::to_string(n_predict) + 
+               ", temp=" + std::to_string(temp) + ", top_p=" + std::to_string(top_p) + "}";
+    }
+};
+
+/**
+ * Model parameters for GGML models
+ */
+struct ModelParams {
+    int32_t n_ctx = 2048;           // Context size
+    int32_t n_batch = 512;          // Batch size for prompt processing
+    int32_t n_gpu_layers = -1;      // Number of layers to store in VRAM
+    bool use_mmap = true;           // Use memory mapping
+    bool use_mlock = false;         // Lock memory
+    bool embedding = false;         // Enable embedding mode
+    float rope_freq_base = 10000.0f; // RoPE base frequency
+    float rope_freq_scale = 1.0f;   // RoPE frequency scaling
+    
+    // Validation
+    bool isValid() const {
+        return n_ctx > 0 && n_batch > 0 && rope_freq_base > 0.0f && rope_freq_scale > 0.0f;
+    }
+    
+    std::string toString() const {
+        return "ModelParams{n_ctx=" + std::to_string(n_ctx) + 
+               ", n_batch=" + std::to_string(n_batch) + "}";
+    }
+};
+
+/**
+ * Model information
+ */
+struct ModelInfo {
+    std::string path;
+    std::string architecture;
+    int64_t parameter_count = 0;
+    int32_t vocab_size = 0;
+    int32_t context_length = 0;
+    size_t memory_usage_bytes = 0;
+    bool is_quantized = false;
+    std::string quantization_type;
+    
+    std::string toString() const {
+        return "ModelInfo{path=" + path + ", params=" + std::to_string(parameter_count) + 
+               ", ctx_len=" + std::to_string(context_length) + "}";
+    }
+};
+
+/**
+ * Callback for streaming generation
+ */
+using StreamCallback = std::function<void(const std::string& token, const std::string& error, bool done)>;
 
 /**
  * Abstract base class for LLM providers
@@ -94,16 +174,57 @@ public:
  */
 class GGMLClient : public LLMClient {
 private:
+#ifdef HAVE_GGML
+    llama_model* model = nullptr;
+    llama_context* context = nullptr;
+    llama_sampling_context* sampling_ctx = nullptr;
+#endif
+    
     std::string modelPath;
     std::string modelType;
+    ModelParams modelParams;
+    GenerationParams defaultGenParams;
+    bool modelLoaded = false;
+    
+    // Thread safety
+    mutable std::mutex modelMutex;
     
 public:
     GGMLClient(const std::string& path = "", const std::string& type = "llama");
+    ~GGMLClient();
     
+    // LLMClient interface
     std::string chatCompletion(const std::vector<Message>& messages, 
                              const std::string& model = "") override;
     void setApiKey(const std::string& key) override;
     std::string getProviderName() const override;
+    
+    // GGML-specific methods
+    bool loadModel(const std::string& path, const ModelParams& params = ModelParams{});
+    void unloadModel();
+    bool isModelLoaded() const { return modelLoaded; }
+    std::string getModelPath() const { return modelPath; }
+    
+    // Text generation
+    std::string generateText(const std::string& prompt, 
+                           const GenerationParams& params = GenerationParams{});
+    
+    // Streaming generation
+    void streamGeneration(const std::string& prompt,
+                         StreamCallback callback,
+                         const GenerationParams& params = GenerationParams{});
+    
+    // Parameter management
+    void setDefaultGenerationParams(const GenerationParams& params);
+    GenerationParams getDefaultGenerationParams() const;
+    void setModelParams(const ModelParams& params);
+    ModelParams getModelParams() const;
+    
+    // Model information
+    ModelInfo getModelInfo() const;
+    size_t getModelMemoryUsage() const;
+    
+    // Legacy compatibility
     void setModelPath(const std::string& path);
 };
 
