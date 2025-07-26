@@ -10,14 +10,86 @@ Forget complex integrations, **harness the power of [function calling](https://p
 **Agents showcase**
 ![llm-function-agent](https://github.com/user-attachments/assets/6e380069-8211-4a16-8592-096e909b921d)
 
-## Prerequisites
+## Project Status: OpenCog Cognitive Architecture Integration
+
+**Current Phase**: Iteration 3 - Real GGML Integration & Cognitive Foundation
+
+This repository is undergoing transformation from a traditional LLM functions toolkit into a comprehensive OpenCog cognitive architecture component. See [iteration-3.md](iteration-3.md) for the current development roadmap.
+
+### Recent Achievements
+- ✅ **Iteration 1**: Foundation with C++ core library and Scheme interface
+- ✅ **Iteration 2**: GGML framework, AtomSpace integration, comprehensive RAG system
+- 🚧 **Iteration 3**: Real model loading, PLN reasoning, production readiness
+
+### Development Roadmap
+- **Iteration 4**: Advanced reasoning & learning capabilities
+- **Iteration 5**: Production cognitive architecture with distributed processing  
+- **Iteration 6**: AGI research platform with causal reasoning
+
+## Dual Usage: Traditional LLM Functions + Cognitive Architecture
+
+### Traditional LLM Functions (Current)
 
 Make sure you have the following tools installed:
 
 - [argc](https://github.com/sigoden/argc): A bash command-line framework and command runner
 - [jq](https://github.com/jqlang/jq): A JSON processor
 
-## Getting Started with [AIChat](https://github.com/sigoden/aichat)
+### OpenCog Cognitive Architecture (New)
+
+For the new cognitive architecture features:
+
+- [OpenCog](https://opencog.org/): Cognitive architecture framework (optional)
+- [Guile Scheme 3.0](https://www.gnu.org/software/guile/): Scheme implementation
+- [GGML/llama.cpp](https://github.com/ggerganov/llama.cpp): Local model inference
+- CMake 3.10+ and C++14 compiler
+
+## Quick Start: OpenCog Cognitive Architecture
+
+### 1. Build the cognitive architecture components
+
+```sh
+# Install dependencies (Ubuntu/Debian)
+sudo apt-get install cmake build-essential guile-3.0-dev libcurl4-openssl-dev libjsoncpp-dev
+
+# Build the OpenCog module
+./build-opencog.sh
+
+# Run comprehensive tests
+./test-opencog.sh
+```
+
+### 2. Use cognitive architecture features
+
+```scheme
+#!/usr/bin/env guile
+!#
+
+(use-modules (opencog caichat init)
+             (opencog caichat rag)
+             (opencog caichat atomspace))
+
+;; Set up local GGML model
+(caichat-setup-ggml "/path/to/model.gguf")
+
+;; Create knowledge base with RAG
+(caichat-rag-create-kb "research" "AI research papers")
+(caichat-rag-add-doc "research" "paper1" "GGML enables efficient inference..." '())
+
+;; Query with cognitive reasoning
+(caichat-rag-query "research" "How does GGML improve performance?")
+
+;; Store concepts in AtomSpace
+(caichat-atomspace-add-concept "GGML" "Tensor library for ML inference")
+```
+
+### 3. Development and contribution
+
+See [docs/roadmap.md](docs/roadmap.md) for the complete development roadmap and [docs/iteration-3-plan.md](docs/iteration-3-plan.md) for current development tasks.
+
+---
+
+## Traditional LLM Functions Usage
 
 **Currently, AIChat is the only CLI tool that supports `llm-functions`. We look forward to more tools supporting `llm-functions`.**
 
